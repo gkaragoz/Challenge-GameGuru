@@ -9,6 +9,8 @@ namespace SimpleRacer {
 		private Road _road = null;
 		[SerializeField]
 		private float _startRoadScale = 10f;
+		[SerializeField]
+		private float _straightRoadScale = 5f;
 
 		[Header("Debug")]
 		[SerializeField]
@@ -24,7 +26,8 @@ namespace SimpleRacer {
 		private void SpawnStartRoad() {
 			Road spawnedRoad = _road.Spawn(this.transform, Vector3.zero);
 			spawnedRoad.SetRoadShape(RoadShape.UP_STRAIGHT);
-			spawnedRoad.SetScale(_startRoadScale);
+			spawnedRoad.SetScale(_startRoadScale, true);
+			spawnedRoad.SetRandomConnection();
 
 			_roads.Enqueue(spawnedRoad);
 
@@ -33,11 +36,16 @@ namespace SimpleRacer {
 
 		private void SpawnMap() {
 			for (int ii = 0; ii < _road.CountPooled(); ii++) {
-				//Road spawnedRoad = _road.Spawn(this.transform, )
+				Road spawnedRoad = _road.Spawn(_lastSpawnedRoad.GetConnectionPoint());
 
-				//_roads.Enqueue()
+				RoadShape nextShape = _lastSpawnedRoad.SelectedRoadDetails.RoadConnectionShape;
+				spawnedRoad.SetRoadShape(nextShape);
+				spawnedRoad.SetScale(_straightRoadScale);
+				spawnedRoad.SetRandomConnection();
 
-				//_lastSpawnedRoad = spawnedRoad;
+				_roads.Enqueue(spawnedRoad);
+				
+				_lastSpawnedRoad = spawnedRoad;
 			}
 		}
 

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace SimpleRacer {
@@ -13,6 +14,8 @@ namespace SimpleRacer {
 		[SerializeField]
 		private RoadDetails _selectedRoadDetails = null;
 
+		public RoadDetails SelectedRoadDetails { get { return _selectedRoadDetails; } }
+
 		private bool HasSelectedRoad() {
 			return _selectedRoadDetails ? true : false;
 		}
@@ -20,7 +23,26 @@ namespace SimpleRacer {
 		public void SetRoadShape(RoadShape shape) {
 			_selectedRoadDetails = _roadDetails.Where(rd => rd.RoadConnectionsSO.m_Shape == shape).FirstOrDefault();
 
+			foreach (RoadDetails roadDetails in _roadDetails) {
+				roadDetails.Hide();
+			}
+
 			_selectedRoadDetails.Show();
+		}
+
+		public void SetTurnedRoadShape() {
+			RoadShape[] roadShapes = new RoadShape[] {
+				RoadShape.FROM_LEFT_TO_RIGHT_U_SHAPE,
+				RoadShape.FROM_LEFT_TO_TURN_UP_CORNER,
+				RoadShape.FROM_RIGHT_TO_LEFT_U_SHAPE,
+				RoadShape.FROM_RIGHT_TO_TURN_UP_CORNER,
+				RoadShape.FROM_UP_TO_TURN_LEFT_CORNER,
+				RoadShape.FROM_UP_TO_TURN_RIGHT_CORNER,
+			};
+
+			RoadShape randomTurnedRoadShape = roadShapes[UnityEngine.Random.Range(0, roadShapes.Length)];
+
+			SetRoadShape(randomTurnedRoadShape);
 		}
 
 		public Vector3 GetConnectionPoint() {
@@ -32,15 +54,23 @@ namespace SimpleRacer {
 			return _selectedRoadDetails.GetConnectionPoint();
 		}
 
-		public void SetScale(float size) {
+		public void SetScale(float size, bool isFirstRoad = false) {
 			if (!HasSelectedRoad()) {
 				Debug.LogWarning("Selected road not found.");
 				return;
 			}
 
-			_selectedRoadDetails.SetScale(size);
+			_selectedRoadDetails.SetScale(size, isFirstRoad);
 		}
 
+		public void SetRandomConnection() {
+			if (!HasSelectedRoad()) {
+				Debug.LogWarning("Selected road not found.");
+				return;
+			}
+
+			_selectedRoadDetails.SetRandomConnection();
+		}
 	}
 
 }

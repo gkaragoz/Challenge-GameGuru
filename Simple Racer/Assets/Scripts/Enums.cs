@@ -12,4 +12,10 @@
 		UP_STRAIGHT
 	}
 
+	public static class EnumsHelper {
+		public static RoadShape GetRandomRoadShape() {
+			return (RoadShape)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(RoadShape)).Length);
+		}
+	}
+
 }

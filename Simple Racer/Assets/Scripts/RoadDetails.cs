@@ -15,41 +15,52 @@ namespace SimpleRacer {
 
 		public RoadConnections_SO RoadConnectionsSO { get { return _roadConnectionSO; } }
 		public Transform Barrel { get { return _barrel; } }
+		public RoadShape RoadShape { get { return _roadConnectionSO.m_Shape; } }
+		public RoadShape RoadConnectionShape { get { return _roadConnectionSO.m_ConnectionShape; } }
 
 		public void Show() {
 			this.gameObject.SetActive(true);
 		}
 
-		public Vector3 GetConnectionPoint() {
-			Vector3 connectionPoint = _connectionTransform.position;
-
-			switch (_roadConnectionSO.m_Shape) {
-				case RoadShape.LEFT_STRAIGHT:
-                    connectionPoint.x -= this.transform.localScale.x * _roadScaleToWorldPosMultiplier;
-					return connectionPoint;
-				case RoadShape.RIGHT_STRAIGHT:
-                    connectionPoint.x += this.transform.localScale.x * _roadScaleToWorldPosMultiplier;
-                    return connectionPoint;
-				case RoadShape.UP_STRAIGHT:
-                    connectionPoint.z += this.transform.localScale.z * _roadScaleToWorldPosMultiplier;
-                    return connectionPoint;
-			}
-
-            return connectionPoint;
+		public void Hide() {
+			this.gameObject.SetActive(false);
 		}
 
-		public void SetScale(float size) {
+		public Vector3 GetConnectionPoint() {
 			switch (_roadConnectionSO.m_Shape) {
 				case RoadShape.LEFT_STRAIGHT:
-					this.transform.localScale = this.transform.localScale.WithX(size);
+					_connectionTransform.position -= _connectionTransform.localPosition.WithX(this.transform.localScale.z * 2 * _roadScaleToWorldPosMultiplier);
 					break;
 				case RoadShape.RIGHT_STRAIGHT:
-					this.transform.localScale = this.transform.localScale.WithX(size);
+					_connectionTransform.position += _connectionTransform.localPosition.WithX(this.transform.localScale.z * 2 * _roadScaleToWorldPosMultiplier);
 					break;
 				case RoadShape.UP_STRAIGHT:
-					this.transform.localScale = this.transform.localScale.WithZ(size);
+					_connectionTransform.position += _connectionTransform.localPosition.WithZ(this.transform.localScale.z * 2 * _roadScaleToWorldPosMultiplier);
 					break;
 			}
+
+			return _connectionTransform.position;
+		}
+
+		public void SetScale(float size, bool isFirstRoad = false) {
+			if (isFirstRoad) {
+				this.transform.localScale = this.transform.localScale.WithZ(size);
+				_roadScaleToWorldPosMultiplier = size / 2;
+				return;
+			}
+
+			switch (_roadConnectionSO.m_Shape) {
+				case RoadShape.UP_STRAIGHT:
+				case RoadShape.LEFT_STRAIGHT:
+				case RoadShape.RIGHT_STRAIGHT:
+					this.transform.localScale = this.transform.localScale.WithZ(size);
+					_roadScaleToWorldPosMultiplier = size;
+					break;
+			}
+		}
+
+		public void SetRandomConnection() {
+			_roadConnectionSO.SetRandomConnection();
 		}
 
 	}

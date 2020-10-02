@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Shape: 6
   m_Road: {fileID: 1212931235, guid: 5d5e2621223450543b556d0ef5d030a8, type: 3}
+  m_ConnectionShape: 4
   connections: 0400000003000000
