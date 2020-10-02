@@ -1,4 +1,4 @@
-﻿namespace GK {
+﻿namespace SimpleRacer {
 
 	public enum RoadShape {
 		FROM_UP_TO_TURN_RIGHT_CORNER,

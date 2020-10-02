@@ -1,5 +1,5 @@
 ﻿
-namespace GK {
+namespace SimpleRacer {
 
 	public static class Strings { 
 		
