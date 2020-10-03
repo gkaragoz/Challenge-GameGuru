@@ -1447,7 +1447,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startupPoolMode: 0
   startupPools:
-  - size: 15
+  - size: 100
     prefab: {fileID: 5055509502759023874, guid: 5d5e2621223450543b556d0ef5d030a8,
       type: 3}
 --- !u!114 &1099754668
@@ -1468,6 +1468,7 @@ MonoBehaviour:
   _levelUpRoadScale: 20
   _levelUpFrequency: 15
   _lastSpawnedRoad: {fileID: 0}
+  _spawnedCornerCounter: 0
 --- !u!1 &1475431954
 GameObject:
   m_ObjectHideFlags: 0
