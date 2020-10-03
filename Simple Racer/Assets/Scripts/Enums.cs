@@ -36,6 +36,17 @@
 			}
 			return UnityEngine.Vector3.zero;
 		}
+
+		public static bool IsStraight(this RoadShape roadShape) {
+			switch (roadShape) {
+				case RoadShape.LEFT_STRAIGHT:
+				case RoadShape.RIGHT_STRAIGHT:
+				case RoadShape.UP_STRAIGHT:
+					return true;
+				default:
+					return false;
+			}
+		}
 	}
 
 }

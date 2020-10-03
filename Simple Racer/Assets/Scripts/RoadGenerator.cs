@@ -56,27 +56,17 @@ namespace SimpleRacer {
 				RoadShape nextShape = _lastSpawnedRoad.GetRoadConnectionShape();
 				spawnedRoad.SetRoadShape(nextShape);
 
-				if (ShouldSpawnLevelUpRoad()) {
+				if (ShouldSpawnLevelUpRoad() && nextShape.IsStraight()) {
 					spawnedRoad.SetScale(_levelUpRoadScale);
 					spawnedRoad.SetAsLevelUpRoad();
 				} else {
+					_spawnedCornerCounter++;
 					spawnedRoad.SetScale(_straightRoadScale);
 				}
 
 				spawnedRoad.SetRandomConnection();
 
 				_roads.Enqueue(spawnedRoad);
-
-				switch (nextShape) {
-					case RoadShape.FROM_UP_TO_TURN_RIGHT_CORNER:
-					case RoadShape.FROM_UP_TO_TURN_LEFT_CORNER:
-					case RoadShape.FROM_RIGHT_TO_TURN_UP_CORNER:
-					case RoadShape.FROM_LEFT_TO_TURN_UP_CORNER:
-					case RoadShape.FROM_LEFT_TO_RIGHT_U_SHAPE:
-					case RoadShape.FROM_RIGHT_TO_LEFT_U_SHAPE:
-						_spawnedCornerCounter++;
-						break;
-				}
 
 				_lastSpawnedRoad = spawnedRoad;
 			}
@@ -87,7 +77,7 @@ namespace SimpleRacer {
 				return false;
 			}
 
-			return _spawnedCornerCounter % _levelUpFrequency == 0;
+			return _spawnedCornerCounter % ((_levelUpFrequency * 2) - 1) == 0;
 		}
 
 		public void Generate() {

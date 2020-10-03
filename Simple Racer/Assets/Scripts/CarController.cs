@@ -138,9 +138,17 @@ namespace SimpleRacer {
 				return;
 			}
 
-			GameManager.instance.AddScore();
-
-			onRoadCompleted?.Invoke();
+			switch (other.transform.GetComponentInParent<Road>().GetRoadShape()) {
+				case RoadShape.FROM_UP_TO_TURN_RIGHT_CORNER:
+				case RoadShape.FROM_UP_TO_TURN_LEFT_CORNER:
+				case RoadShape.FROM_RIGHT_TO_TURN_UP_CORNER:
+				case RoadShape.FROM_LEFT_TO_TURN_UP_CORNER:
+				case RoadShape.FROM_LEFT_TO_RIGHT_U_SHAPE:
+				case RoadShape.FROM_RIGHT_TO_LEFT_U_SHAPE:
+					GameManager.instance.AddScore();
+					onRoadCompleted?.Invoke();
+					break;
+			}
 		}
 
 		private void OnDestroy() {
