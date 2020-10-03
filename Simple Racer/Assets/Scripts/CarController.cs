@@ -11,15 +11,24 @@ namespace SimpleRacer {
 		[SerializeField]
 		private bool _hasStopped = true;
 
+		private Vector3 _spawnPosition = Vector3.zero;
+		private Quaternion _spawnRotation = Quaternion.identity;
+
 		private void Awake() {
 			GameManager.onGameStateChanged += OnGameStateChanged;
 			InputManager.onPressing += OnPressing;
+
+			_spawnPosition = this.transform.position;
+			_spawnRotation = this.transform.rotation;
 		}
 
 		private void OnGameStateChanged(GameState gameState) {
 			switch (gameState) {
 				case GameState.MapGeneration:
 				case GameState.Prestage:
+					_hasStopped = true;
+					ResetCar();
+					break;
 				case GameState.GameOver:
 					_hasStopped = true;
 					break;
@@ -29,6 +38,13 @@ namespace SimpleRacer {
 			}
 
 			SetCarState();
+		}
+
+		private void ResetCar() {
+			transform.position = _spawnPosition;
+			transform.rotation = _spawnRotation;
+
+			StopMovement();
 		}
 
 		private void SetCarState() {
