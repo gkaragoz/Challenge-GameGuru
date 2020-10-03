@@ -17,8 +17,8 @@ namespace SimpleRacer {
 
 		private void OnGameStateChanged(GameState gameState) {
 			switch (gameState) {
-				case GameState.LevelGeneration:
-				case GameState.LevelFailed:
+				case GameState.MapGeneration:
+				case GameState.GameOver:
 					_hasBlocked = true;
 					break;
 				case GameState.Prestage:

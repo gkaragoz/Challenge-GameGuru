@@ -14,10 +14,10 @@
 
 	public enum GameState {
 		Loading,
-		LevelGeneration,
+		MapGeneration,
 		Prestage,
 		Gameplay,
-		LevelFailed,
+		GameOver,
 	}
 
 	public static class EnumsHelper {

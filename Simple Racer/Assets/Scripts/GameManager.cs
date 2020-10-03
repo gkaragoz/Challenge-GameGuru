@@ -47,11 +47,15 @@ namespace SimpleRacer {
         }
 
         private void GenerateMap() {
-            GameState = GameState.LevelGeneration;
+            GameState = GameState.MapGeneration;
         }
 
         public void InitNewGame() {
             GenerateMap();
+        }
+
+        public void GameOver() {
+            GameState = GameState.GameOver;
         }
 
     }

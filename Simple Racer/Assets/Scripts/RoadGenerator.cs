@@ -26,7 +26,7 @@ namespace SimpleRacer {
 		}
 
 		private void OnGameStateChanged(GameState gameState) {
-			if (gameState == GameState.LevelGeneration) {
+			if (gameState == GameState.MapGeneration) {
 				Generate();
 			}
 		}

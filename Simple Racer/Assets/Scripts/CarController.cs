@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SimpleRacer {
 
@@ -19,9 +18,9 @@ namespace SimpleRacer {
 
 		private void OnGameStateChanged(GameState gameState) {
 			switch (gameState) {
-				case GameState.LevelGeneration:
+				case GameState.MapGeneration:
 				case GameState.Prestage:
-				case GameState.LevelFailed:
+				case GameState.GameOver:
 					_hasStopped = true;
 					break;
 				case GameState.Gameplay:
@@ -54,6 +53,12 @@ namespace SimpleRacer {
 
 		private void HandleTurn() {
 			_carMotor.HandleTurn();
+		}
+
+		private void OnCollisionEnter(Collision collision) {
+			Debug.Log(collision.gameObject.name);
+
+			GameManager.instance.GameOver();
 		}
 
 	}
