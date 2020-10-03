@@ -117,8 +117,8 @@ namespace SimpleRacer {
 			return _selectedRoadDetails.GetTurnSide();
 		}
 
-		public void SetAsLevelUpRoad() {
-			_isLevelUpRoad = true;
+		public void SetAsLevelUpRoad(bool isIt) {
+			_isLevelUpRoad = isIt;
 		}
 
 		public bool IsLevelUpRoad() {

@@ -30,13 +30,9 @@ namespace SimpleRacer {
 		public Vector3 GetConnectionPoint() {
 			switch (_roadConnectionSO.m_Shape) {
 				case RoadShape.LEFT_STRAIGHT:
-					_connectionTransform.position -= _connectionTransform.localPosition.WithX(this.transform.localScale.z *_roadScaleToWorldPosMultiplier);
-					break;
 				case RoadShape.RIGHT_STRAIGHT:
-					_connectionTransform.position += _connectionTransform.localPosition.WithX(this.transform.localScale.z * _roadScaleToWorldPosMultiplier);
-					break;
 				case RoadShape.UP_STRAIGHT:
-					_connectionTransform.position += _connectionTransform.localPosition.WithZ(this.transform.localScale.z * _roadScaleToWorldPosMultiplier);
+					_connectionTransform.localPosition = _connectionTransform.localPosition.WithZ(_roadScaleToWorldPosMultiplier);
 					break;
 			}
 

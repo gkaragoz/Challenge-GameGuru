@@ -40,12 +40,19 @@ namespace SimpleRacer {
 		}
 
 		private void OnRoadCompleted() {
-			ObjectPool.Recycle(_roads.Dequeue());
+			if (GameManager.instance.PlayerScore <= 5) {
+				return;
+			}
+
+			Road road = _roads.Dequeue();
+			road.SetAsLevelUpRoad(false);
+
+			ObjectPool.Recycle(road);
 			SpawnRoad();
 		}
 
 		private void SpawnStartRoad() {
-			Road spawnedRoad = _road.Spawn(this.transform, Vector3.zero);
+			Road spawnedRoad = _road.Spawn(this.transform, Vector3.zero, Quaternion.identity);
 			spawnedRoad.SetRoadShape(RoadShape.UP_STRAIGHT);
 			spawnedRoad.SetScale(_startRoadScale);
 			spawnedRoad.SetRandomConnection();
@@ -63,14 +70,14 @@ namespace SimpleRacer {
 		}
 
 		private void SpawnRoad() {
-			Road spawnedRoad = _road.Spawn(this.transform, _lastSpawnedRoad.GetConnectionPoint());
+			Road spawnedRoad = _road.Spawn(this.transform, _lastSpawnedRoad.GetConnectionPoint(), Quaternion.identity);
 
 			RoadShape nextShape = _lastSpawnedRoad.GetRoadConnectionShape();
 			spawnedRoad.SetRoadShape(nextShape);
 
 			if (ShouldSpawnLevelUpRoad() && nextShape.IsStraight()) {
 				spawnedRoad.SetScale(_levelUpRoadScale);
-				spawnedRoad.SetAsLevelUpRoad();
+				spawnedRoad.SetAsLevelUpRoad(true);
 			} else {
 				_spawnedCornerCounter++;
 				spawnedRoad.SetScale(_straightRoadScale);
