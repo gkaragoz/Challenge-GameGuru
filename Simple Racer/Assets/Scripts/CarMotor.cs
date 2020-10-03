@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace SimpleRacer {
 
 	[RequireComponent(typeof(Rigidbody))]
 	public class CarMotor : MonoBehaviour {
+
+		public static Action<Vector3> onHookStarted;
+		public static Action onHookStopped;
 
 		[Header("Initializations")]
 		[SerializeField]
@@ -54,12 +58,16 @@ namespace SimpleRacer {
 			StopMovement();
 
 			IsTurningActive = true;
+
+			onHookStarted?.Invoke(_activeRoad.GetBarrelTransform().position);
 		}
 
 		public void StopTurning() {
 			_activeRoad = null;
 
 			IsTurningActive = false;
+
+			onHookStopped?.Invoke();
 		}
 
 	}
