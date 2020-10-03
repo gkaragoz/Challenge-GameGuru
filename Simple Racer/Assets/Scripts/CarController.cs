@@ -28,6 +28,12 @@ namespace SimpleRacer {
 			_spawnRotation = this.transform.rotation;
 		}
 
+		private void Update() {
+			if (GameManager.instance.GameState == GameState.Gameplay) {
+				KeepCarBalancing();
+			}
+		}
+
 		private void OnGameStateChanged(GameState gameState) {
 			switch (gameState) {
 				case GameState.GameOver:
@@ -91,6 +97,24 @@ namespace SimpleRacer {
 			Debug.Log("Level up");
 
 			onLevelUp?.Invoke();
+		}
+
+		private void KeepCarBalancing() {
+			if (_activeRoad == null) {
+				return;
+			}
+
+			switch (_activeRoad.GetRoadShape()) {
+				case RoadShape.LEFT_STRAIGHT:
+					_carMotor.KeepCarBalancing(RoadShape.LEFT_STRAIGHT.GetDirectionFromStraightRoadShape());
+					break;
+				case RoadShape.RIGHT_STRAIGHT:
+					_carMotor.KeepCarBalancing(RoadShape.RIGHT_STRAIGHT.GetDirectionFromStraightRoadShape());
+					break;
+				case RoadShape.UP_STRAIGHT:
+					_carMotor.KeepCarBalancing(RoadShape.UP_STRAIGHT.GetDirectionFromStraightRoadShape());
+					break;
+			}
 		}
 
 		private void OnCollisionEnter(Collision collision) {

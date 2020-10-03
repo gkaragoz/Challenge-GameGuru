@@ -63,6 +63,15 @@ namespace SimpleRacer {
 			return _selectedRoadDetails.RoadConnectionShape;
 		}
 
+		public RoadShape GetRoadShape() {
+			if (!HasSelectedRoad()) {
+				Debug.LogWarning("Selected road not found.");
+				return RoadShape.UP_STRAIGHT;
+			}
+
+			return _selectedRoadDetails.RoadShape;
+		}
+
 		public Transform GetBarrelTransform() {
 			if (!HasSelectedRoad()) {
 				Debug.LogWarning("Selected road not found.");

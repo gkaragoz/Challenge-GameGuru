@@ -24,6 +24,18 @@
 		public static RoadShape GetRandomRoadShape() {
 			return (RoadShape)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(RoadShape)).Length);
 		}
+
+		public static UnityEngine.Vector3 GetDirectionFromStraightRoadShape(this RoadShape roadShape) {
+			switch (roadShape) {
+				case RoadShape.LEFT_STRAIGHT:
+					return UnityEngine.Vector3.left;
+				case RoadShape.RIGHT_STRAIGHT:
+					return UnityEngine.Vector3.right;
+				case RoadShape.UP_STRAIGHT:
+					return UnityEngine.Vector3.forward;
+			}
+			return UnityEngine.Vector3.zero;
+		}
 	}
 
 }

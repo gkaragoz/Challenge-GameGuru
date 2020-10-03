@@ -3,103 +3,123 @@ using UnityEngine;
 
 namespace SimpleRacer {
 
-	[RequireComponent(typeof(Rigidbody))]
-	public class CarMotor : MonoBehaviour {
+    [RequireComponent(typeof(Rigidbody))]
+    public class CarMotor : MonoBehaviour {
 
-		public static Action<Vector3> onHookStarted;
-		public static Action onHookStopped;
+        public static Action<Vector3> onHookStarted;
+        public static Action onHookStopped;
 
-		[Header("Initializations")]
-		[SerializeField]
-		private float _speed = 1f;
-		[SerializeField]
-		private float _rotationSpeed = 15f;
-		[SerializeField]
-		private float _localRotationSpeed = 30f;
-		[SerializeField]
-		private float _localRotationClampMin = -25f;
-		[SerializeField]
-		private float _localRotationClampMax = 25f;
-		[SerializeField]
-		private float _driftTime = 1f;
-		[SerializeField]
-		private Transform _driftingPivotTransform = null;
-		[SerializeField]
-		private Rigidbody _rb = null;
+        [Header("Initializations")]
+        [SerializeField]
+        private float _speed = 1f;
+        [SerializeField]
+        private float _balanceRotationSpeed = 30f;
+        [SerializeField]
+        private AnimationCurve _balanceCurve = null;
+        [SerializeField]
+        private float _rotationSpeed = 15f;
+        [SerializeField]
+        private float _localRotationSpeed = 30f;
+        [SerializeField]
+        private float _localRotationClampMin = -25f;
+        [SerializeField]
+        private float _localRotationClampMax = 25f;
+        [SerializeField]
+        private float _driftTime = 1f;
+        [SerializeField]
+        private Transform _driftingPivotTransform = null;
+        [SerializeField]
+        private Rigidbody _rb = null;
 
-		private Road _activeRoad = null;
+        private Road _activeRoad = null;
 
-		public bool IsTurningActive { get; private set; }
+        public bool IsTurningActive { get; private set; }
+        public bool IsMoving { get { return _rb.velocity.magnitude > 0; } }
 
-		public float Speed {
-			get {
-				return _speed;
-			}
-			set {
-				_speed = value;
-			}
-		}
+        public float Speed {
+            get {
+                return _speed;
+            }
+            set {
+                _speed = value;
+            }
+        }
 
-		private void Update() {
-			if (IsTurningActive) {
-				KeepTurning();
-			}
-		}
+        private void Update() {
+            if (IsTurningActive) {
+                KeepTurning();
+            } else {
+                StartMovement();
+            }
+        }
 
-		private void TurnLocalMesh() {
-			float localTurnAmount = _localRotationSpeed * Time.deltaTime;
-			_driftingPivotTransform.Rotate(Vector3.up * _activeRoad.GetTurnSide(), localTurnAmount);
+        private void TurnLocalMesh() {
+            float localTurnAmount = _localRotationSpeed * Time.deltaTime;
+            _driftingPivotTransform.Rotate(Vector3.up * _activeRoad.GetTurnSide(), localTurnAmount);
 
-			Vector3 currentRotation = _driftingPivotTransform.localRotation.eulerAngles.NormalizeAngleIn360();
-			currentRotation.y = Mathf.Clamp(currentRotation.y, _localRotationClampMin, _localRotationClampMax);
-			_driftingPivotTransform.localRotation = Quaternion.Euler(currentRotation);
-		}
+            Vector3 currentRotation = _driftingPivotTransform.localRotation.eulerAngles.NormalizeAngleIn360();
+            currentRotation.y = Mathf.Clamp(currentRotation.y, _localRotationClampMin, _localRotationClampMax);
+            _driftingPivotTransform.localRotation = Quaternion.Euler(currentRotation);
+        }
 
-		private void KeepTurning() {
-			StopDrifting();
+        private void KeepTurning() {
+            StopDrifting();
 
-			TurnLocalMesh();
-			
-			this.transform.RotateAround(_activeRoad.GetBarrelTransform().position, Vector3.up, _activeRoad.GetTurnSide() * _rotationSpeed * Time.deltaTime);
-		}
+            TurnLocalMesh();
 
-		public void StartDrifting() {
-			StopDrifting();
+            this.transform.RotateAround(_activeRoad.GetBarrelTransform().position, Vector3.up, _activeRoad.GetTurnSide() * _rotationSpeed * Time.deltaTime);
+        }
 
-			LeanTween.rotateLocal(_driftingPivotTransform.gameObject, Vector3.zero, _driftTime).setEaseOutElastic();
-		}
+        public void KeepCarBalancing(Vector3 balanceDirection) {
+            if (IsMoving == false) {
+                return;
+            }
 
-		public void StopDrifting() {
-			LeanTween.cancel(_driftingPivotTransform.gameObject);
-		}
+            if (IsTurningActive) {
+                return;
+            }
 
-		public void StartMovement() {
-			_rb.velocity = transform.forward * _speed;
-		}
+            Quaternion lookRotation = Quaternion.LookRotation(balanceDirection, Vector3.up);
+            this.transform.localRotation = Quaternion.RotateTowards(this.transform.localRotation, lookRotation, _balanceCurve.Evaluate(_balanceRotationSpeed * Time.deltaTime));
+        }
 
-		public void StopMovement() {
-			_rb.velocity = Vector3.zero;
-			_rb.angularVelocity = Vector3.zero;
-		}
+        public void StartDrifting() {
+            StopDrifting();
 
-		public void StartTurning(Road enteredRoad) {
-			_activeRoad = enteredRoad;
+            LeanTween.rotateLocal(_driftingPivotTransform.gameObject, Vector3.zero, _driftTime).setEaseOutElastic();
+        }
 
-			StopMovement();
+        public void StopDrifting() {
+            LeanTween.cancel(_driftingPivotTransform.gameObject);
+        }
 
-			IsTurningActive = true;
+        public void StartMovement() {
+            _rb.velocity = transform.forward * _speed;
+        }
 
-			onHookStarted?.Invoke(_activeRoad.GetBarrelTransform().position);
-		}
+        public void StopMovement() {
+            _rb.velocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+        }
 
-		public void StopTurning() {
-			_activeRoad = null;
+        public void StartTurning(Road enteredRoad) {
+            _activeRoad = enteredRoad;
 
-			IsTurningActive = false;
+            StopMovement();
 
-			onHookStopped?.Invoke();
-		}
+            IsTurningActive = true;
 
-	}
+            onHookStarted?.Invoke(_activeRoad.GetBarrelTransform().position);
+        }
+
+        public void StopTurning() {
+            _activeRoad = null;
+
+            IsTurningActive = false;
+
+            onHookStopped?.Invoke();
+        }
+
+    }
 
 }
