@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace SimpleRacer {
@@ -10,9 +11,17 @@ namespace SimpleRacer {
 		private RectTransform _txtTapToStartRect = null;
 		[SerializeField]
 		private RectTransform _btnRetry = null;
+		[SerializeField]
+		private TextMeshProUGUI _txtScore = null;
 
 		private void Awake() {
 			GameManager.onGameStateChanged += OnGameStateChanged;
+
+			CarController.onRoadCompleted += OnRoadCompleted;
+		}
+
+		private void OnRoadCompleted() {
+			_txtScore.text = GameManager.instance.PlayerScore.ToString();
 		}
 
 		private void OnGameStateChanged(GameState gameState) {
