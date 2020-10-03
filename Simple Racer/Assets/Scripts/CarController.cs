@@ -96,6 +96,12 @@ namespace SimpleRacer {
 		private void LevelUp() {
 			Debug.Log("Level up");
 
+			if (_carMotor.IsTurningActive) {
+				StopTurning();
+			}
+
+			_carMotor.BoostSpeed(_activeRoad.transform.position);
+
 			onLevelUp?.Invoke();
 		}
 
@@ -138,7 +144,14 @@ namespace SimpleRacer {
 				return;
 			}
 
-			switch (other.transform.GetComponentInParent<Road>().GetRoadShape()) {
+			Road road = other.transform.GetComponentInParent<Road>();
+			RoadShape roadShape = road.GetRoadShape();
+
+			if (road.IsLevelUpRoad()) {
+				_carMotor.NormalizeSpeed();
+			}
+
+			switch (roadShape) {
 				case RoadShape.FROM_UP_TO_TURN_RIGHT_CORNER:
 				case RoadShape.FROM_UP_TO_TURN_LEFT_CORNER:
 				case RoadShape.FROM_RIGHT_TO_TURN_UP_CORNER:

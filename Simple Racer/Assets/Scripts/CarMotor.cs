@@ -35,6 +35,7 @@ namespace SimpleRacer {
 
         public bool IsTurningActive { get; private set; }
         public bool IsMoving { get { return _rb.velocity.magnitude > 0; } }
+        public bool IsBoosted { get; private set; }
 
         public float Speed {
             get {
@@ -126,6 +127,17 @@ namespace SimpleRacer {
             IsTurningActive = false;
 
             onHookStopped?.Invoke();
+        }
+
+        public void BoostSpeed(Vector3 normalizePosition) {
+            _speed *= 2.5f;
+
+            this.transform.transform.position = normalizePosition;
+            this.transform.GetChild(0).transform.localRotation = Quaternion.Euler(Vector3.zero);
+        }
+
+        public void NormalizeSpeed() {
+            _speed /= 2.5f;
         }
 
     }
