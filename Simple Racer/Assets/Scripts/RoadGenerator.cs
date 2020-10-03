@@ -38,7 +38,7 @@ namespace SimpleRacer {
 		private void SpawnStartRoad() {
 			Road spawnedRoad = _road.Spawn(this.transform, Vector3.zero);
 			spawnedRoad.SetRoadShape(RoadShape.UP_STRAIGHT);
-			spawnedRoad.SetScale(_startRoadScale, true);
+			spawnedRoad.SetScale(_startRoadScale);
 			spawnedRoad.SetRandomConnection();
 
 			_roads.Enqueue(spawnedRoad);
@@ -55,13 +55,13 @@ namespace SimpleRacer {
 				spawnedRoad.SetRoadShape(nextShape);
 
 				if (ShouldSpawnLevelUpRoad()) {
-					spawnedRoad.SetScale(_levelUpRoadScale, true);
+					spawnedRoad.SetScale(_levelUpRoadScale);
 					spawnedRoad.SetAsLevelUpRoad();
-					spawnedRoad.SetRandomConnection();
 				} else {
 					spawnedRoad.SetScale(_straightRoadScale);
-					spawnedRoad.SetRandomConnection();
 				}
+
+				spawnedRoad.SetRandomConnection();
 
 				_roads.Enqueue(spawnedRoad);
 				

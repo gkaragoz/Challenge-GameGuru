@@ -81,13 +81,13 @@ namespace SimpleRacer {
 			return _selectedRoadDetails.Barrel ? true : false;
 		}
 
-		public void SetScale(float size, bool isFirstRoad = false) {
+		public void SetScale(float size) {
 			if (!HasSelectedRoad()) {
 				Debug.LogWarning("Selected road not found.");
 				return;
 			}
 
-			_selectedRoadDetails.SetScale(size, isFirstRoad);
+			_selectedRoadDetails.SetScale(size);
 		}
 
 		public void SetRandomConnection() {
