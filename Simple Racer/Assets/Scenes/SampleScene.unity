@@ -943,36 +943,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6031522421969372322, guid: f9a3dfaa6ff016649bfc2df0020dcaff,
-        type: 3}
-      propertyPath: m_Positions.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6031522421969372322, guid: f9a3dfaa6ff016649bfc2df0020dcaff,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 6031522421969372322, guid: f9a3dfaa6ff016649bfc2df0020dcaff,
-        type: 3}
-      propertyPath: m_Parameters.textureMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6031522421969372322, guid: f9a3dfaa6ff016649bfc2df0020dcaff,
-        type: 3}
-      propertyPath: m_UseWorldSpace
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8095022820585491132, guid: f9a3dfaa6ff016649bfc2df0020dcaff,
-        type: 3}
-      propertyPath: _centerOffset.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8095022820585491132, guid: f9a3dfaa6ff016649bfc2df0020dcaff,
-        type: 3}
-      propertyPath: _targetOffset.y
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9a3dfaa6ff016649bfc2df0020dcaff, type: 3}
 --- !u!4 &795851083 stripped
@@ -1154,7 +1124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &896112449
 RectTransform:
   m_ObjectHideFlags: 0

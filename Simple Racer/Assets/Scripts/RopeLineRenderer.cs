@@ -25,7 +25,7 @@ namespace SimpleRacer {
             CarMotor.onHookStopped += OnHookStopped;
         }
 
-        private void Update() {
+        private void LateUpdate() {
             if (_isDrawing) {
                 Draw();
             }
