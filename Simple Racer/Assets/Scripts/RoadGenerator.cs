@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace SimpleRacer {
 	public class RoadGenerator : MonoBehaviour {
+
+		public static Action onMapGenerated;
 
 		[Header("Initializations")]
 		[SerializeField]
@@ -18,9 +21,14 @@ namespace SimpleRacer {
 
 		private Queue<Road> _roads = new Queue<Road>();
 
-		private void Start() {
-			SpawnStartRoad();
-			SpawnMap();
+		private void Awake() {
+			GameManager.onGameStateChanged += OnGameStateChanged;
+		}
+
+		private void OnGameStateChanged(GameState gameState) {
+			if (gameState == GameState.LevelGeneration) {
+				Generate();
+			}
 		}
 
 		private void SpawnStartRoad() {
@@ -48,6 +56,13 @@ namespace SimpleRacer {
 				
 				_lastSpawnedRoad = spawnedRoad;
 			}
+		}
+
+		public void Generate() {
+			SpawnStartRoad();
+			SpawnMap();
+
+			onMapGenerated?.Invoke();
 		}
 
 	}

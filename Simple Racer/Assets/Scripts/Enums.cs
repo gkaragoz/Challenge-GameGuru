@@ -12,6 +12,14 @@
 		UP_STRAIGHT
 	}
 
+	public enum GameState {
+		Loading,
+		LevelGeneration,
+		Prestage,
+		Gameplay,
+		LevelFailed,
+	}
+
 	public static class EnumsHelper {
 		public static RoadShape GetRandomRoadShape() {
 			return (RoadShape)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(RoadShape)).Length);
