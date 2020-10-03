@@ -6,6 +6,7 @@ namespace SimpleRacer {
 	public class CarController : MonoBehaviour {
 
 		public static Action onRoadCompleted;
+		public static Action onLevelUp;
 
 		[Header("Initializations")]
 		[SerializeField]
@@ -101,6 +102,12 @@ namespace SimpleRacer {
 			_carMotor.StopTurning();
 		}
 
+		private void LevelUp() {
+			Debug.Log("Level up");
+
+			onLevelUp?.Invoke();
+		}
+
 		private void OnCollisionEnter(Collision collision) {
 			Debug.Log(collision.gameObject.name);
 
@@ -109,6 +116,10 @@ namespace SimpleRacer {
 
 		private void OnTriggerEnter(Collider other) {
 			_activeRoad = other.transform.GetComponentInParent<Road>();
+
+			if (_activeRoad.IsLevelUpRoad()) {
+				LevelUp();
+			}
 		}
 
 		private void OnTriggerExit(Collider other) {

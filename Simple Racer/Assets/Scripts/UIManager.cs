@@ -8,16 +8,29 @@ namespace SimpleRacer {
 
 		[Header("Initializations")]
 		[SerializeField]
+		private float _levelUpTextTime = 1f;
+		[SerializeField]
 		private RectTransform _txtTapToStartRect = null;
 		[SerializeField]
 		private RectTransform _btnRetry = null;
 		[SerializeField]
 		private TextMeshProUGUI _txtScore = null;
+		[SerializeField]
+		private RectTransform _txtLevelUpRect = null;
 
 		private void Awake() {
 			GameManager.onGameStateChanged += OnGameStateChanged;
 
 			CarController.onRoadCompleted += OnRoadCompleted;
+			CarController.onLevelUp += OnLevelUp;
+		}
+
+		private void OnLevelUp() {
+			_txtLevelUpRect.gameObject.SetActive(true);
+
+			_txtLevelUpRect.gameObject.LeanDelayedCall(_levelUpTextTime, () => {
+				_txtLevelUpRect.gameObject.SetActive(false);
+			});
 		}
 
 		private void OnRoadCompleted() {

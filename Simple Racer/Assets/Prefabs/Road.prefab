@@ -857,6 +857,7 @@ MonoBehaviour:
   - {fileID: 5055509503971944873}
   - {fileID: 5055509503971944872}
   _selectedRoadDetails: {fileID: 0}
+  _isLevelUpRoad: 0
 --- !u!114 &5055509503971944874
 MonoBehaviour:
   m_ObjectHideFlags: 0

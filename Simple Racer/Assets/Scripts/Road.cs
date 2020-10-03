@@ -13,6 +13,8 @@ namespace SimpleRacer {
 		[Header("Debug")]
 		[SerializeField]
 		private RoadDetails _selectedRoadDetails = null;
+		[SerializeField]
+		private bool _isLevelUpRoad = false;
 
 		private bool HasSelectedRoad() {
 			return _selectedRoadDetails ? true : false;
@@ -105,6 +107,15 @@ namespace SimpleRacer {
 
 			return _selectedRoadDetails.GetTurnSide();
 		}
+
+		public void SetAsLevelUpRoad() {
+			_isLevelUpRoad = true;
+		}
+
+		public bool IsLevelUpRoad() {
+			return _isLevelUpRoad;
+		}
+
 	}
 
 }

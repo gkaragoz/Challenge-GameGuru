@@ -56,6 +56,7 @@ namespace SimpleRacer {
 
 				if (ShouldSpawnLevelUpRoad()) {
 					spawnedRoad.SetScale(_levelUpRoadScale, true);
+					spawnedRoad.SetAsLevelUpRoad();
 					spawnedRoad.SetRandomConnection();
 				} else {
 					spawnedRoad.SetScale(_straightRoadScale);
