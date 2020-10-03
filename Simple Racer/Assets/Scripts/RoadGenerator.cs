@@ -70,8 +70,7 @@ namespace SimpleRacer {
 		}
 
 		private bool ShouldSpawnLevelUpRoad() {
-			// -1 because we've first start straight road.
-			return _roads.Count % (_levelUpFrequency - 1) == 0;
+			return _roads.Count % _levelUpFrequency == 0;
 		}
 
 		public void Generate() {
