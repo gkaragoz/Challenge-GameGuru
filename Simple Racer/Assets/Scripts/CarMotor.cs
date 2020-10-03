@@ -46,10 +46,14 @@ namespace SimpleRacer {
         }
 
         private void Update() {
+            if (GameManager.instance.GameState != GameState.Gameplay) {
+                return;
+            }
+
             if (IsTurningActive) {
                 KeepTurning();
             } else {
-                StartMovement();
+                ApplyMovement();
             }
         }
 
@@ -91,6 +95,10 @@ namespace SimpleRacer {
 
         public void StopDrifting() {
             LeanTween.cancel(_driftingPivotTransform.gameObject);
+        }
+
+        public void ApplyMovement() {
+            _rb.velocity = transform.forward * _speed;
         }
 
         public void StartMovement() {

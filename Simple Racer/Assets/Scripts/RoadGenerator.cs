@@ -83,6 +83,10 @@ namespace SimpleRacer {
 		}
 
 		private bool ShouldSpawnLevelUpRoad() {
+			if (_spawnedCornerCounter == 0) {
+				return false;
+			}
+
 			return _spawnedCornerCounter % _levelUpFrequency == 0;
 		}
 
