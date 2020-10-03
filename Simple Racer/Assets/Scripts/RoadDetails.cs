@@ -63,6 +63,20 @@ namespace SimpleRacer {
 			_roadConnectionSO.SetRandomConnection();
 		}
 
+		public int GetTurnSide() {
+			switch (_roadConnectionSO.m_Shape) {
+				case RoadShape.FROM_UP_TO_TURN_RIGHT_CORNER:
+				case RoadShape.FROM_LEFT_TO_RIGHT_U_SHAPE:
+				case RoadShape.FROM_LEFT_TO_TURN_UP_CORNER:
+					return 1;
+				case RoadShape.FROM_UP_TO_TURN_LEFT_CORNER:
+				case RoadShape.FROM_RIGHT_TO_TURN_UP_CORNER:
+				case RoadShape.FROM_RIGHT_TO_LEFT_U_SHAPE:
+					return -1;
+			}
+			return 0;
+		}
+
 	}
 
 }

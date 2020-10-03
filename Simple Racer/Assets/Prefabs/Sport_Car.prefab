@@ -446,6 +446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _carMotor: {fileID: 530083042166623807}
   _hasStopped: 0
+  _activeRoad: {fileID: 0}
 --- !u!114 &530083042166623807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,4 +460,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 50
-  _isMoving: 0
+  _rotationSpeed: 120

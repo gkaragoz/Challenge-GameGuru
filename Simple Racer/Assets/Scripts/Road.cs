@@ -14,8 +14,6 @@ namespace SimpleRacer {
 		[SerializeField]
 		private RoadDetails _selectedRoadDetails = null;
 
-		public RoadDetails SelectedRoadDetails { get { return _selectedRoadDetails; } }
-
 		private bool HasSelectedRoad() {
 			return _selectedRoadDetails ? true : false;
 		}
@@ -54,6 +52,33 @@ namespace SimpleRacer {
 			return _selectedRoadDetails.GetConnectionPoint();
 		}
 
+		public RoadShape GetRoadConnectionShape() {
+			if (!HasSelectedRoad()) {
+				Debug.LogWarning("Selected road not found.");
+				return RoadShape.UP_STRAIGHT;
+			}
+
+			return _selectedRoadDetails.RoadConnectionShape;
+		}
+
+		public Transform GetBarrelTransform() {
+			if (!HasSelectedRoad()) {
+				Debug.LogWarning("Selected road not found.");
+				return null;
+			}
+
+			return _selectedRoadDetails.Barrel;
+		}
+
+		public bool HasBarrel() {
+			if (!HasSelectedRoad()) {
+				Debug.LogWarning("Selected road not found.");
+				return false;
+			}
+
+			return _selectedRoadDetails.Barrel ? true : false;
+		}
+
 		public void SetScale(float size, bool isFirstRoad = false) {
 			if (!HasSelectedRoad()) {
 				Debug.LogWarning("Selected road not found.");
@@ -70,6 +95,15 @@ namespace SimpleRacer {
 			}
 
 			_selectedRoadDetails.SetRandomConnection();
+		}
+
+		public int GetTurnSide() {
+			if (!HasSelectedRoad()) {
+				Debug.LogWarning("Selected road not found.");
+				return 0;
+			}
+
+			return _selectedRoadDetails.GetTurnSide();
 		}
 	}
 

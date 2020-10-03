@@ -47,7 +47,7 @@ namespace SimpleRacer {
 			for (int ii = 0; ii < pooledReadyCount; ii++) {
 				Road spawnedRoad = _road.Spawn(this.transform, _lastSpawnedRoad.GetConnectionPoint());
 
-				RoadShape nextShape = _lastSpawnedRoad.SelectedRoadDetails.RoadConnectionShape;
+				RoadShape nextShape = _lastSpawnedRoad.GetRoadConnectionShape();
 				spawnedRoad.SetRoadShape(nextShape);
 				spawnedRoad.SetScale(_straightRoadScale);
 				spawnedRoad.SetRandomConnection();

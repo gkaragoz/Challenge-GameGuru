@@ -7,6 +7,7 @@ namespace SimpleRacer {
 
 		public static Action onFirstTimePressed;
 		public static Action onPressing;
+		public static Action onReleased;
 
 		[SerializeField]
 		private bool _hasBlocked = false;
@@ -39,6 +40,9 @@ namespace SimpleRacer {
 				}
 
 				onPressing?.Invoke();
+			}
+			if (Input.GetMouseButtonUp(0)) {
+				onReleased?.Invoke();
 			}
 		}
 

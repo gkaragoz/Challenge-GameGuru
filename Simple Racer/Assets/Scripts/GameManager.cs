@@ -11,6 +11,8 @@ namespace SimpleRacer {
         [Header("Debug")]
         [SerializeField]
         private GameState _gameState;
+        [SerializeField]
+        private int _playerScore = 0;
 
         public GameState GameState {
             get { return _gameState; }
@@ -21,6 +23,8 @@ namespace SimpleRacer {
                 onGameStateChanged?.Invoke(GameState);
             }
         }
+
+        public int PlayerScore { get { return _playerScore; } }
 
         private void Awake() {
             if (instance == null) {
@@ -50,7 +54,13 @@ namespace SimpleRacer {
             GameState = GameState.MapGeneration;
         }
 
+        public void AddScore() {
+            _playerScore++;
+        }
+
         public void InitNewGame() {
+            _playerScore = 0;
+
             GenerateMap();
         }
 
