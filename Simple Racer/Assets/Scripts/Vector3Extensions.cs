@@ -48,5 +48,19 @@ public static class Vector3Extensions {
 		var d = Vector3.Dot(point - pointOnLine, lineDirection);
 		return pointOnLine + (lineDirection * d);
 	}
+
+	public static Vector3 NormalizeAngleIn360(this Vector3 angle) {
+		if (angle.x > 180) {
+			angle.x -= 360;
+		}
+		if (angle.y > 180) {
+			angle.y -= 360;
+		}
+		if (angle.z > 180) {
+			angle.y -= 360;
+		}
+		return angle;
+	}
+
 }
 

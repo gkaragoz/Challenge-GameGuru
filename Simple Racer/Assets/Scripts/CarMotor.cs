@@ -14,14 +14,30 @@ namespace SimpleRacer {
 		private float _speed = 1f;
 		[SerializeField]
 		private float _rotationSpeed = 15f;
-
+		[SerializeField]
+		private float _localRotationSpeed = 30f;
+		[SerializeField]
+		private float _localRotationClampMin = -25f;
+		[SerializeField]
+		private float _localRotationClampMax = 25f;
+		[SerializeField]
+		private float _driftTime = 1f;
+		[SerializeField]
+		private Transform _driftingPivotTransform = null;
+		[SerializeField]
 		private Rigidbody _rb = null;
+
 		private Road _activeRoad = null;
 
 		public bool IsTurningActive { get; private set; }
 
-		private void Awake() {
-			_rb = GetComponent<Rigidbody>();
+		public float Speed {
+			get {
+				return _speed;
+			}
+			set {
+				_speed = value;
+			}
 		}
 
 		private void Update() {
@@ -30,17 +46,31 @@ namespace SimpleRacer {
 			}
 		}
 
+		private void TurnLocalMesh() {
+			float localTurnAmount = _localRotationSpeed * Time.deltaTime;
+			_driftingPivotTransform.Rotate(Vector3.up * _activeRoad.GetTurnSide(), localTurnAmount);
+
+			Vector3 currentRotation = _driftingPivotTransform.localRotation.eulerAngles.NormalizeAngleIn360();
+			currentRotation.y = Mathf.Clamp(currentRotation.y, _localRotationClampMin, _localRotationClampMax);
+			_driftingPivotTransform.localRotation = Quaternion.Euler(currentRotation);
+		}
+
 		private void KeepTurning() {
+			StopDrifting();
+
+			TurnLocalMesh();
+			
 			this.transform.RotateAround(_activeRoad.GetBarrelTransform().position, Vector3.up, _activeRoad.GetTurnSide() * _rotationSpeed * Time.deltaTime);
 		}
 
-		public float Speed { 
-			get {
-				return _speed;
-			}
-			set {
-				_speed = value;
-			} 
+		public void StartDrifting() {
+			StopDrifting();
+
+			LeanTween.rotateLocal(_driftingPivotTransform.gameObject, Vector3.zero, _driftTime).setEaseOutElastic();
+		}
+
+		public void StopDrifting() {
+			LeanTween.cancel(_driftingPivotTransform.gameObject);
 		}
 
 		public void StartMovement() {

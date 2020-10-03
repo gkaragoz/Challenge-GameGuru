@@ -80,5 +80,9 @@ namespace SimpleRacer {
 			onMapGenerated?.Invoke();
 		}
 
+		private void OnDestroy() {
+			GameManager.onGameStateChanged -= OnGameStateChanged;
+		}
+
 	}
 }

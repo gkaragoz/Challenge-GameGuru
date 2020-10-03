@@ -46,6 +46,10 @@ namespace SimpleRacer {
 			}
 		}
 
+		private void OnDestroy() {
+			GameManager.onGameStateChanged -= OnGameStateChanged;
+		}
+
 	}
 
 }

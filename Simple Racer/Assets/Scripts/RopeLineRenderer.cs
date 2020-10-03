@@ -52,6 +52,11 @@ namespace SimpleRacer {
             _lineRenderer.positionCount = 0;
         }
 
+        private void OnDestroy() {
+            CarMotor.onHookStarted -= OnHookStarted;
+            CarMotor.onHookStopped -= OnHookStopped;
+        }
+
     }
 
 }

@@ -60,6 +60,13 @@ namespace SimpleRacer {
 					break;
 			}
 		}
+
+		private void OnDestroy() {
+			GameManager.onGameStateChanged -= OnGameStateChanged;
+
+			CarController.onRoadCompleted -= OnRoadCompleted;
+			CarController.onLevelUp -= OnLevelUp;
+		}
 	}
 
 }

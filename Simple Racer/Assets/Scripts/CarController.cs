@@ -12,9 +12,6 @@ namespace SimpleRacer {
 		[SerializeField]
 		private CarMotor _carMotor = null;
 
-		[SerializeField]
-		private bool _hasStopped = true;
-
 		[Header("Debug")]
 		[SerializeField]
 		private Road _activeRoad = null;
@@ -33,37 +30,14 @@ namespace SimpleRacer {
 
 		private void OnGameStateChanged(GameState gameState) {
 			switch (gameState) {
-				case GameState.MapGeneration:
-				case GameState.Prestage:
-					_hasStopped = true;
-					ResetCar();
-					break;
 				case GameState.GameOver:
-					_hasStopped = true;
+					StopMovement();
+					StopTurning();
+					StopDrifting();
 					break;
 				case GameState.Gameplay:
-					_hasStopped = false;
+					StartMovement();
 					break;
-			}
-
-			SetCarState();
-		}
-
-		private void ResetCar() {
-			transform.position = _spawnPosition;
-			transform.rotation = _spawnRotation;
-
-			_activeRoad = null;
-
-			StopMovement();
-		}
-
-		private void SetCarState() {
-			if (_hasStopped) {
-				StopMovement();
-				StopTurning();
-			} else {
-				StartMovement();
 			}
 		}
 
@@ -77,6 +51,7 @@ namespace SimpleRacer {
 			if (GameManager.instance.GameState == GameState.Gameplay) {
 				if (_carMotor.IsTurningActive) {
 					StopTurning();
+					StartDrifting();
 					StartMovement();
 				}
 			}
@@ -102,6 +77,14 @@ namespace SimpleRacer {
 
 		private void StopTurning() {
 			_carMotor.StopTurning();
+		}
+
+		private void StartDrifting() {
+			_carMotor.StartDrifting();
+		}
+
+		private void StopDrifting() {
+			_carMotor.StopDrifting();
 		}
 
 		private void LevelUp() {
@@ -134,6 +117,12 @@ namespace SimpleRacer {
 			GameManager.instance.AddScore();
 
 			onRoadCompleted?.Invoke();
+		}
+
+		private void OnDestroy() {
+			GameManager.onGameStateChanged -= OnGameStateChanged;
+			InputManager.onPressing -= OnPressing;
+			InputManager.onReleased -= OnReleased;
 		}
 
 	}

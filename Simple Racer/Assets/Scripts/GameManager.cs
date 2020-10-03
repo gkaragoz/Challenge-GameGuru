@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SimpleRacer {
     public class GameManager : MonoBehaviour {
@@ -17,8 +18,6 @@ namespace SimpleRacer {
         public GameState GameState {
             get { return _gameState; }
             private set {
-                Debug.LogWarning("GameState has been changed from " + _gameState + " to " + value);
-
                 _gameState = value;
                 onGameStateChanged?.Invoke(GameState);
             }
@@ -32,14 +31,13 @@ namespace SimpleRacer {
             } else if (instance != this) {
                 Destroy(gameObject);
             }
-            DontDestroyOnLoad(instance);
 
             RoadGenerator.onMapGenerated += OnMapGenerated;
             InputManager.onFirstTimePressed += OnFirstTimePressed;
         }
 
         private void Start() {
-            InitNewGame(); 
+            InitNewGame();
         }
 
         private void OnMapGenerated() {
@@ -64,8 +62,17 @@ namespace SimpleRacer {
             GenerateMap();
         }
 
+        public void RestartGame() {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         public void GameOver() {
             GameState = GameState.GameOver;
+        }
+
+        private void OnDestroy() {
+            RoadGenerator.onMapGenerated -= OnMapGenerated;
+            InputManager.onFirstTimePressed -= OnFirstTimePressed;
         }
 
     }
