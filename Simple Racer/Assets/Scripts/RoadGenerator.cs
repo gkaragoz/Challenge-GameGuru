@@ -29,12 +29,19 @@ namespace SimpleRacer {
 
 		private void Awake() {
 			GameManager.onGameStateChanged += OnGameStateChanged;
+			CarController.onCornerRoadCompleted += OnRoadCompleted;
+			CarController.onStraightRoadCompleted += OnRoadCompleted;
 		}
 
 		private void OnGameStateChanged(GameState gameState) {
 			if (gameState == GameState.MapGeneration) {
 				Generate();
 			}
+		}
+
+		private void OnRoadCompleted() {
+			ObjectPool.Recycle(_roads.Dequeue());
+			SpawnRoad();
 		}
 
 		private void SpawnStartRoad() {
@@ -51,25 +58,29 @@ namespace SimpleRacer {
 		private void SpawnMap() {
 			int pooledReadyCount = _road.CountPooled();
 			for (int ii = 0; ii < pooledReadyCount; ii++) {
-				Road spawnedRoad = _road.Spawn(this.transform, _lastSpawnedRoad.GetConnectionPoint());
-
-				RoadShape nextShape = _lastSpawnedRoad.GetRoadConnectionShape();
-				spawnedRoad.SetRoadShape(nextShape);
-
-				if (ShouldSpawnLevelUpRoad() && nextShape.IsStraight()) {
-					spawnedRoad.SetScale(_levelUpRoadScale);
-					spawnedRoad.SetAsLevelUpRoad();
-				} else {
-					_spawnedCornerCounter++;
-					spawnedRoad.SetScale(_straightRoadScale);
-				}
-
-				spawnedRoad.SetRandomConnection();
-
-				_roads.Enqueue(spawnedRoad);
-
-				_lastSpawnedRoad = spawnedRoad;
+				SpawnRoad();
 			}
+		}
+
+		private void SpawnRoad() {
+			Road spawnedRoad = _road.Spawn(this.transform, _lastSpawnedRoad.GetConnectionPoint());
+
+			RoadShape nextShape = _lastSpawnedRoad.GetRoadConnectionShape();
+			spawnedRoad.SetRoadShape(nextShape);
+
+			if (ShouldSpawnLevelUpRoad() && nextShape.IsStraight()) {
+				spawnedRoad.SetScale(_levelUpRoadScale);
+				spawnedRoad.SetAsLevelUpRoad();
+			} else {
+				_spawnedCornerCounter++;
+				spawnedRoad.SetScale(_straightRoadScale);
+			}
+
+			spawnedRoad.SetRandomConnection();
+
+			_roads.Enqueue(spawnedRoad);
+
+			_lastSpawnedRoad = spawnedRoad;
 		}
 
 		private bool ShouldSpawnLevelUpRoad() {
@@ -89,6 +100,8 @@ namespace SimpleRacer {
 
 		private void OnDestroy() {
 			GameManager.onGameStateChanged -= OnGameStateChanged;
+			CarController.onCornerRoadCompleted -= OnRoadCompleted;
+			CarController.onStraightRoadCompleted -= OnRoadCompleted;
 		}
 
 	}

@@ -21,7 +21,7 @@ namespace SimpleRacer {
 		private void Awake() {
 			GameManager.onGameStateChanged += OnGameStateChanged;
 
-			CarController.onRoadCompleted += OnRoadCompleted;
+			CarController.onCornerRoadCompleted += OnRoadCompleted;
 			CarController.onLevelUp += OnLevelUp;
 		}
 
@@ -64,7 +64,7 @@ namespace SimpleRacer {
 		private void OnDestroy() {
 			GameManager.onGameStateChanged -= OnGameStateChanged;
 
-			CarController.onRoadCompleted -= OnRoadCompleted;
+			CarController.onCornerRoadCompleted -= OnRoadCompleted;
 			CarController.onLevelUp -= OnLevelUp;
 		}
 	}

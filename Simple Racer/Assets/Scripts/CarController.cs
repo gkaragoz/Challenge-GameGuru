@@ -5,7 +5,8 @@ namespace SimpleRacer {
 
 	public class CarController : MonoBehaviour {
 
-		public static Action onRoadCompleted;
+		public static Action onCornerRoadCompleted;
+		public static Action onStraightRoadCompleted;
 		public static Action onLevelUp;
 
 		[Header("Initializations")]
@@ -166,7 +167,12 @@ namespace SimpleRacer {
 				case RoadShape.FROM_LEFT_TO_RIGHT_U_SHAPE:
 				case RoadShape.FROM_RIGHT_TO_LEFT_U_SHAPE:
 					GameManager.instance.AddScore();
-					onRoadCompleted?.Invoke();
+					onCornerRoadCompleted?.Invoke();
+					break;
+				case RoadShape.LEFT_STRAIGHT:
+				case RoadShape.RIGHT_STRAIGHT:
+				case RoadShape.UP_STRAIGHT:
+					onStraightRoadCompleted?.Invoke();
 					break;
 			}
 		}
