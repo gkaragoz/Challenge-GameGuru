@@ -34,6 +34,10 @@ namespace SimpleRacer {
 		}
 
 		private void OnRoadCompleted() {
+			SetScore();
+		}
+
+		private void SetScore() {
 			_txtScore.text = GameManager.instance.PlayerScore.ToString();
 		}
 
@@ -45,6 +49,7 @@ namespace SimpleRacer {
 					_btnRetry.gameObject.SetActive(false);
 					break;
 				case GameState.Prestage:
+					SetScore();
 					_txtTapToStartRect.gameObject.SetActive(true);
 					break;
 				case GameState.Gameplay:

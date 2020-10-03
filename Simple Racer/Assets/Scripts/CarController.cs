@@ -53,6 +53,8 @@ namespace SimpleRacer {
 			transform.position = _spawnPosition;
 			transform.rotation = _spawnRotation;
 
+			_activeRoad = null;
+
 			StopMovement();
 		}
 
@@ -89,7 +91,7 @@ namespace SimpleRacer {
 		}
 
 		private void StartTurning() {
-			if (_activeRoad == null && _carMotor.IsTurningActive) {
+			if (_activeRoad == null || _carMotor.IsTurningActive) {
 				return;
 			}
 
@@ -109,12 +111,14 @@ namespace SimpleRacer {
 		}
 
 		private void OnCollisionEnter(Collision collision) {
-			Debug.Log(collision.gameObject.name);
-
 			GameManager.instance.GameOver();
 		}
 
 		private void OnTriggerEnter(Collider other) {
+			if (GameManager.instance.GameState != GameState.Gameplay) {
+				return;
+			}
+
 			_activeRoad = other.transform.GetComponentInParent<Road>();
 
 			if (_activeRoad.IsLevelUpRoad()) {
@@ -123,6 +127,10 @@ namespace SimpleRacer {
 		}
 
 		private void OnTriggerExit(Collider other) {
+			if (GameManager.instance.GameState != GameState.Gameplay) {
+				return;
+			}
+
 			GameManager.instance.AddScore();
 
 			onRoadCompleted?.Invoke();
