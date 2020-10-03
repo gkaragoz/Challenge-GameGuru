@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace SimpleRacer {
 
@@ -11,10 +12,9 @@ namespace SimpleRacer {
 		public RoadShape[] connections = null;
 
 		public void SetRandomConnection() {
-			int randomIndex = Random.Range(0, connections.Length);
+			int randomIndex = UnityEngine.Random.Range(0, connections.Length);
 			m_ConnectionShape = connections[randomIndex];
 		}
-
-	}
+    }
 
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace SimpleRacer {
 
@@ -42,8 +43,8 @@ namespace SimpleRacer {
 			return _connectionTransform.position;
 		}
 
-		public void SetScale(float size, bool isFirstRoad = false) {
-			if (isFirstRoad) {
+		public void SetScale(float size, bool isLongRoad = false) {
+			if (isLongRoad) {
 				this.transform.localScale = this.transform.localScale.WithZ(size);
 				_roadScaleToWorldPosMultiplier = size / 2;
 				return;

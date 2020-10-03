@@ -1394,6 +1394,8 @@ MonoBehaviour:
   _road: {fileID: 1212931235, guid: 5d5e2621223450543b556d0ef5d030a8, type: 3}
   _startRoadScale: 10
   _straightRoadScale: 5
+  _levelUpRoadScale: 10
+  _levelUpFrequency: 15
   _lastSpawnedRoad: {fileID: 0}
 --- !u!1 &1475431954
 GameObject:

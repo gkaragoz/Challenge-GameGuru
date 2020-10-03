@@ -14,6 +14,10 @@ namespace SimpleRacer {
 		private float _startRoadScale = 10f;
 		[SerializeField]
 		private float _straightRoadScale = 5f;
+		[SerializeField]
+		private float _levelUpRoadScale = 10f;
+		[SerializeField]
+		private int _levelUpFrequency = 15;
 
 		[Header("Debug")]
 		[SerializeField]
@@ -49,13 +53,24 @@ namespace SimpleRacer {
 
 				RoadShape nextShape = _lastSpawnedRoad.GetRoadConnectionShape();
 				spawnedRoad.SetRoadShape(nextShape);
-				spawnedRoad.SetScale(_straightRoadScale);
-				spawnedRoad.SetRandomConnection();
+
+				if (ShouldSpawnLevelUpRoad()) {
+					spawnedRoad.SetScale(_levelUpRoadScale, true);
+					spawnedRoad.SetRandomConnection();
+				} else {
+					spawnedRoad.SetScale(_straightRoadScale);
+					spawnedRoad.SetRandomConnection();
+				}
 
 				_roads.Enqueue(spawnedRoad);
 				
 				_lastSpawnedRoad = spawnedRoad;
 			}
+		}
+
+		private bool ShouldSpawnLevelUpRoad() {
+			// -1 because we've first start straight road.
+			return _roads.Count % (_levelUpFrequency - 1) == 0;
 		}
 
 		public void Generate() {
