@@ -22,6 +22,7 @@ namespace SimpleRacer {
 				this.gameObject.LeanValue(1f, 0f, _time)
 					.setOnUpdate((float value) => {
 						_canvasGroup.alpha = value;
+						_canvasGroup.blocksRaycasts = false;
 					});
 			});
 		}
