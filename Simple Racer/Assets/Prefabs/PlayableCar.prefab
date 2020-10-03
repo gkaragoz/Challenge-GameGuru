@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 40
-  _balanceRotationSpeed: 30
+  _balanceRotationTime: 10
   _balanceCurve:
     serializedVersion: 2
     m_Curve:

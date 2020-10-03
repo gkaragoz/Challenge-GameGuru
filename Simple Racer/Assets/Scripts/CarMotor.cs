@@ -13,7 +13,7 @@ namespace SimpleRacer {
         [SerializeField]
         private float _speed = 1f;
         [SerializeField]
-        private float _balanceRotationSpeed = 30f;
+        private float _balanceRotationTime = 30f;
         [SerializeField]
         private AnimationCurve _balanceCurve = null;
         [SerializeField]
@@ -69,10 +69,14 @@ namespace SimpleRacer {
 
         private void KeepTurning() {
             StopDrifting();
+            StopCarBalancingImmediately();
 
             TurnLocalMesh();
 
             this.transform.RotateAround(_activeRoad.GetBarrelTransform().position, Vector3.up, _activeRoad.GetTurnSide() * _rotationSpeed * Time.deltaTime);
+        }
+        private void StopCarBalancingImmediately() {
+            LeanTween.cancel(this.gameObject);
         }
 
         public void KeepCarBalancing(Vector3 balanceDirection) {
@@ -85,7 +89,7 @@ namespace SimpleRacer {
             }
 
             Quaternion lookRotation = Quaternion.LookRotation(balanceDirection, Vector3.up);
-            this.transform.localRotation = Quaternion.RotateTowards(this.transform.localRotation, lookRotation, _balanceCurve.Evaluate(_balanceRotationSpeed * Time.deltaTime));
+            this.transform.localRotation = Quaternion.RotateTowards(this.transform.localRotation, lookRotation, _balanceCurve.Evaluate(_balanceRotationTime * Time.deltaTime));
         }
 
         public void StartDrifting() {
