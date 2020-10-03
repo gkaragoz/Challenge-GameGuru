@@ -37,11 +37,10 @@ namespace SimpleRacer {
 		private void OnGameStateChanged(GameState gameState) {
 			switch (gameState) {
 				case GameState.GameOver:
-					StopMovement();
-					StopTurning();
-					StopDrifting();
+					LockCar();
 					break;
 				case GameState.Gameplay:
+					UnlockCar();
 					StartMovement();
 					break;
 			}
@@ -61,6 +60,14 @@ namespace SimpleRacer {
 					StartMovement();
 				}
 			}
+		}
+
+		private void LockCar() {
+			_carMotor.Lock();
+		}
+
+		private void UnlockCar() {
+			_carMotor.Unlock();
 		}
 
 		private void StartMovement() {

@@ -139,6 +139,17 @@ namespace SimpleRacer {
         public void NormalizeSpeed() {
             _speed /= 2.5f;
         }
+        public void Lock() {
+            StopMovement();
+            StopTurning();
+            StopDrifting();
+
+            _rb.isKinematic = true;
+        }
+
+        public void Unlock() {
+            _rb.isKinematic = false;
+        }
 
     }
 
